@@ -66,9 +66,5 @@ class TestParentNode(unittest.TestCase):
     def element_with_multiple_props(self):
         node = ParentNode('input', attributes={'type': 'text', 'value': 'Sample', 'placeholder': 'Enter text'})
         assert node.to_html() == '<input type="text" value="Sample" placeholder="Enter text"></input>'
-
-    def element_with_no_tag(self):
-        node = ParentNode(None, 'Hello, World!')
-        assert not ValueError
     if __name__ == "__main__":
         unittest.main()
