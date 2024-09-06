@@ -34,3 +34,41 @@ class TestLeafNode(unittest.TestCase):
 
     if __name__ == "__main__":
         unittest.main()
+
+class TestParentNode(unittest.TestCase):
+    def test_to_html(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        
+        expectedValue = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>"
+        self.assertEqual(node.to_html(), expectedValue)
+    def no_content_no_childeren(self):
+        node = ParentNode('p')
+        assert node.to_html() == '<p></p>'
+    def element_with_text_content(self):
+        node = ParentNode('p', 'Hello, World!')
+        assert node.to_html() == '<p>Hello, World!</p>'
+    def element_with_props(self):
+        node = ParentNode('img', attributes={'src': 'image.png', 'alt': 'An image'})
+        assert node.to_html() == '<img src="image.png" alt="An image"></img>'
+    def nested_elements(self):
+        div = ParentNode('div')
+        p = ParentNode('p', 'Nested paragraph.')
+        div.add_child(p)
+        self.assertEqual(div.to_html(),'<div><p>Nested paragraph.</p></div>') 
+    def element_with_multiple_props(self):
+        node = ParentNode('input', attributes={'type': 'text', 'value': 'Sample', 'placeholder': 'Enter text'})
+        assert node.to_html() == '<input type="text" value="Sample" placeholder="Enter text"></input>'
+
+    def element_with_no_tag(self):
+        node = ParentNode(None, 'Hello, World!')
+        assert not ValueError
+    if __name__ == "__main__":
+        unittest.main()
