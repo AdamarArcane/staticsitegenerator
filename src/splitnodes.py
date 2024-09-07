@@ -18,7 +18,8 @@ def split_nodes_delimiter(old_nodes=[], delimiter='', text_type=''):
             else:
                 for index, item in enumerate(split_text_list):
                     if index % 2 == 0:
-                        new_nodes.append(TextNode(item,text_type_text))
+                        if item != "":
+                            new_nodes.append(TextNode(item,text_type_text))
                     else:
                         new_nodes.append(TextNode(item,text_type))
     return new_nodes

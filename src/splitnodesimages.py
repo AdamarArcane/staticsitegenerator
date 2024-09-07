@@ -9,27 +9,23 @@ text_type_link = "link"
 text_type_image = "image"
 
 def split_nodes_image(old_nodes=[]):
-    
     new_nodes = []
     for node in old_nodes:
-        links_list = extract_markdown_images(node.text)
-        if links_list ==  []:
+        if node.text_type != text_type_text:
             new_nodes.append(node)
         else:
-            string = node.text
-            delimiters = []
-            for link in links_list:
-                delimiters.append(f"![{link[0]}]({link[1]})")
-            for delimiter in delimiters:
-                string = " ".join(string.split(delimiter,1))
-            string_list = string.split("  ")
-            string_list.remove("")
-            new_lst = []
-            for string in string_list:
-                string += " "
-                new_lst.append(string)
-            combolist = zip(new_lst,links_list)
-            for text, link in combolist:
-                new_nodes.append(TextNode(text,text_type_text))
-                new_nodes.append(TextNode(link[0],text_type_image,link[1]))
+            images_list = extract_markdown_images(node.text)
+            if not images_list:
+                new_nodes.append(node)
+            else:
+                remaining_text = node.text
+                for alt_text, url in images_list:
+                    image_markdown = f"![{alt_text}]({url})"
+                    before, after = remaining_text.split(image_markdown, 1)
+                    if before:
+                        new_nodes.append(TextNode(before, text_type_text))
+                    new_nodes.append(TextNode(alt_text, text_type_image, url))
+                    remaining_text = after
+                if remaining_text:
+                    new_nodes.append(TextNode(remaining_text, text_type_text))
     return new_nodes

@@ -31,7 +31,6 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         node = TextNode("`code block` at the start", self.text_type_text)
         result = split_nodes_delimiter([node], "`", self.text_type_code)
         expected = [
-            TextNode("", self.text_type_text),
             TextNode("code block", self.text_type_code),
             TextNode(" at the start", self.text_type_text),
         ]
@@ -43,7 +42,6 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         expected = [
             TextNode("At the end ", self.text_type_text),
             TextNode("code block", self.text_type_code),
-            TextNode("", self.text_type_text)
         ]
         self.assertEqual(result, expected)
 
@@ -58,7 +56,7 @@ class TestSplitNodesDelimiter(unittest.TestCase):
     def test_empty_string(self):
         node = TextNode("", self.text_type_text)
         result = split_nodes_delimiter([node], "`", self.text_type_code)
-        expected = [TextNode("", self.text_type_text)]
+        expected = []
         self.assertEqual(result, expected)
 
     def test_delimiter_without_text(self):
