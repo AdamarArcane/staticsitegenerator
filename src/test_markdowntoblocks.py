@@ -29,32 +29,30 @@ class TestMarkdownToBlocks(unittest.TestCase):
     def test_unordered_list(self):
         text = "* Item 1\n* Item 2\n* Item 3"
         result = markdown_to_blocks(text)
-        expected = ["* Item 1", "* Item 2", "* Item 3"]
+        expected = ["* Item 1\n* Item 2\n* Item 3"]
         self.assertEqual(result, expected)
 
     def test_ordered_list(self):
         text = "1. First item\n2. Second item\n3. Third item"
         result = markdown_to_blocks(text)
-        expected = ["1. First item", "2. Second item", "3. Third item"]
+        expected = ["1. First item\n2. Second item\n3. Third item"]
         self.assertEqual(result, expected)
 
     def test_code_block(self):
-        text = "`Code block`"
+        text = "```Code block```"
         result = markdown_to_blocks(text)
-        expected = ["`Code block`"]
+        expected = ["```Code block```"]
         self.assertEqual(result, expected)
 
     def test_mixed_blocks(self):
-        text = "# Heading\n\nThis is a paragraph.\n\n* List item 1\n* List item 2\n\n1. Ordered item 1\n2. Ordered item 2\n\n`Code block`"
+        text = "# Heading\n\nThis is a paragraph.\n\n* List item 1\n* List item 2\n\n1. Ordered item 1\n2. Ordered item 2\n\n```Code block```"
         result = markdown_to_blocks(text)
         expected = [
             "# Heading",
             "This is a paragraph.",
-            "* List item 1",
-            "* List item 2",
-            "1. Ordered item 1",
-            "2. Ordered item 2",
-            "`Code block`"
+            "* List item 1\n* List item 2",
+            "1. Ordered item 1\n2. Ordered item 2",
+            "```Code block```"
         ]
         self.assertEqual(result, expected)
 
@@ -67,7 +65,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
     def test_heading_with_no_content(self):
         text = "# "
         result = markdown_to_blocks(text)
-        expected = ["#"]
+        expected = ["# "]
         self.assertEqual(result, expected)
 
     def test_paragraph_with_images_and_links(self):
@@ -81,7 +79,17 @@ class TestMarkdownToBlocks(unittest.TestCase):
         result = markdown_to_blocks(text)
         expected = ["This is **bold text with a missing closing delimiter."]
         self.assertEqual(result, expected)
-
+        
+    def test_mixed_content_with_heading(self):
+        text = "# Heading\n\n1. First item\n2. Second item\n\n```\nCode block\n```\n\nParagraph"
+        result = markdown_to_blocks(text)
+        expected = [
+        "# Heading",
+        "1. First item\n2. Second item",
+        "```\nCode block\n```",
+        "Paragraph"
+    ]
+        self.assertEqual(result, expected)
 
 if __name__ == "__main__":
     unittest.main()
