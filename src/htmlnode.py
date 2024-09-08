@@ -34,6 +34,9 @@ class LeafNode(HTMLNode):
     def __init__(self, tag=None, value=None, props=None):
         super().__init__(tag, value, None, props)
         self.children = []
+    
+    def __repr__(self):
+        return f"LeafNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
     def to_html(self):
         if self.value is None:
@@ -51,6 +54,9 @@ class ParentNode(HTMLNode):
         self.value = ""
         self.children = children if children is not None else []
         self.props = props if props is not None else {}
+
+    def __repr__(self):
+        return f"ParentNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
     def add_child(self, child_node):
         self.children.append(child_node)
