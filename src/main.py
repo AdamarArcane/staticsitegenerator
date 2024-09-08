@@ -1,8 +1,8 @@
 from textnode import TextNode
+from copysrctodst import copy_src_to_dst
 
 def main():
-    initNode = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(initNode)
+    copy_src_to_dst("static", "public")
 
 
 main()
